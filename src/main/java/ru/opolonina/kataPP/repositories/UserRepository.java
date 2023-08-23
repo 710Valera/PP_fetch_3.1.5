@@ -1,0 +1,14 @@
+package ru.opolonina.kataPP.repositories;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import ru.opolonina.kataPP.model.User;
+
+
+public interface UserRepository extends JpaRepository<User, Integer> {
+
+    @Query("Select u from User u left join fetch u.roles where u.name=:name")
+    User findByUsername (String name);
+
+}

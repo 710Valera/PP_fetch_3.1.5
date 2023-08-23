@@ -1,24 +1,26 @@
-package ru.opolonina.kataPP.controller;
+package ru.opolonina.kataPP.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.opolonina.kataPP.service.UserService;
 import ru.opolonina.kataPP.model.User;
+import ru.opolonina.kataPP.service.UserService;
 
 
 @Controller
-@RequestMapping(value = "/")
-public class UserController {
+@RequestMapping("/admin")
+public class AdminController {
 
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    @Autowired
+    public AdminController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping("/")
     public String getAllUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "index";
@@ -39,7 +41,7 @@ public class UserController {
     @PostMapping
     public String addUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
-        return "redirect:/";
+        return "redirect:/admin/";
     }
 
     @GetMapping("/{id}/edit")
@@ -51,14 +53,14 @@ public class UserController {
     @PostMapping("/{id}")
     public String updateUser(@ModelAttribute("id") User user) {
         userService.updateUser(user);
-        return "redirect:/";
+        return "redirect:/admin/";
 
     }
 
     @DeleteMapping("/{id}")
     public String delitUserbyId(@PathVariable("id") int id) {
         userService.deleteUserById(id);
-        return "redirect:/";
+        return "redirect:/admin/";
     }
 
 }

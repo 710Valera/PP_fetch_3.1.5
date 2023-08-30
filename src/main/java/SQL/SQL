@@ -1,0 +1,39 @@
+CREATE TABLE `kata_pp`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(45) NULL,
+  `last_name` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  `password` VARCHAR(255) NULL,
+  `age` INT NULL,
+  PRIMARY KEY (`id`));
+
+
+INSERT INTO `kata_pp`.`users` SET `id` = '1', `first_name` = 'admin', `email` = 'admin@test.ru', `last_name` = 'Ivanov', `age` = '22', `password` = '$2a$12$OFS3aw6YmdHcv/dsWeNzfOLajfinw.WZtWIXTS0yVCDMks.MSFzJK';
+INSERT INTO  `kata_pp`.`users` SET `id` = '2', `first_name` = 'user', `email` = 'user@test.ru', `last_name` = 'Petrov', `age` = '16', `password` = '$2a$12$rGP4XZccV9u29Q/6mO8m4Ob/Ebmoh5i6KZkCrVFz1m.PxnHt1wwlG' ;
+
+
+
+CREATE TABLE `kata_pp`.`roles` (
+  `id` INT NOT NULL,
+  `role` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
+
+
+insert into `kata_pp`.`roles` SET `id` = '1', `role` = 'ROLE_ADMIN';
+insert into `kata_pp`.`roles` SET `id` = '2', `role` = 'ROLE_USER';
+
+create table users_roles
+(
+    users_id int not null,
+    roles_id int not null,
+    constraint roles_id
+        foreign key (roles_id) references roles (id),
+    constraint users_id
+        foreign key (users_id) references users (id)
+);
+
+insert into `kata_pp`.`users_roles` SET `users_id` = '1', `roles_id` = '1';
+insert into `kata_pp`.`users_roles` SET `users_id` = '1', `roles_id` = '2';
+insert into `kata_pp`.`users_roles` SET `users_id` = '2', `roles_id` = '1';
+
+

@@ -3,9 +3,12 @@ package ru.opolonina.kataPP.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.opolonina.kataPP.model.User;
 import ru.opolonina.kataPP.service.UserService;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -14,6 +17,7 @@ public class AdminController {
 
 
     private final UserService userService;
+    private final String REDIRECT = "redirect:/admin/";
 
     @Autowired
     public AdminController(UserService userService) {
@@ -39,9 +43,12 @@ public class AdminController {
     }
 
     @PostMapping
-    public String addUser(@ModelAttribute("user") User user) {
+    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "new";
+        }
         userService.addUser(user);
-        return "redirect:/admin/";
+        return REDIRECT;
     }
 
     @GetMapping("/{id}/edit")
@@ -50,17 +57,22 @@ public class AdminController {
         return "edit";
     }
 
-    @PostMapping("/{id}")
-    public String updateUser(@ModelAttribute("id") User user) {
+    @PutMapping("/{id}")
+    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "edit";
+        }
         userService.updateUser(user);
-        return "redirect:/admin/";
+        return REDIRECT;
 
     }
 
     @DeleteMapping("/{id}")
-    public String delitUserbyId(@PathVariable("id") int id) {
+    public String deleteUserForId(@PathVariable("id") int id) {
         userService.deleteUserById(id);
-        return "redirect:/admin/";
+        return REDIRECT;
     }
+
+
 
 }

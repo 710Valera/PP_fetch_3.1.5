@@ -3,21 +3,37 @@ package ru.opolonina.kataPP.model;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    @NotEmpty(message = "First name should not be empty")
+    private String firstName;
 
-    @Column(name = "salary")
-    private int salary;
+
+    @Column(name = "last_name")
+    @NotEmpty(message = "Last name should not be empty")
+    private String lastname;
+
+    @Column(name = "age")
+    @Min(value = 0)
+    private int age;
+
+    @Column(name = "email")
+    @NotEmpty(message = "Email should not be empty")
+    @Email(message = "Invalid email")
+    private String email;
 
 
     @Column(name = "password")
@@ -27,12 +43,16 @@ public class User implements UserDetails {
     @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Role> roles;
 
-    public User(String name, int salary, String password, Collection<Role> roles) {
-        this.name = name;
-        this.salary = salary;
+    public User(int id, String firstName, String lastname, int age, String email, String password, Collection<Role> roles) {
+        this.firstName = firstName;
+        this.lastname = lastname;
+        this.age = age;
+        this.email = email;
         this.password = password;
         this.roles = roles;
     }
+
+
     public User() {
     }
 
@@ -45,20 +65,36 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public int getSalary() {
-        return salary;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void setLastname(String lastName) {
+        this.lastname = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -72,7 +108,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return firstName;
     }
 
     @Override
@@ -96,7 +132,8 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+
+        this.password =  password;
     }
 
     public Collection<Role> getRoles() {
@@ -107,28 +144,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", salary=" + salary +
-                ", roles=" + roles +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id && salary == user.salary && Objects.equals(name, user.name) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, salary, password, roles);
-    }
 
 }
 

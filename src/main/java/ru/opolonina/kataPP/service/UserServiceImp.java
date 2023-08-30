@@ -7,55 +7,53 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.opolonina.kataPP.dao.UserDao;
 import ru.opolonina.kataPP.model.Role;
 import ru.opolonina.kataPP.model.User;
-import ru.opolonina.kataPP.repositories.UserRepository;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService, UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserDao userDao;
 
-@Autowired
-    public UserServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Autowired
+    public UserServiceImp(UserDao userDao) {
+        this.userDao = userDao;
     }
 
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userDao.getAllUsers();
     }
 
     @Override
     public void addUser(User user) {
-        userRepository.save(user);
+        userDao.addUser(user);
     }
 
     @Override
     public User getUserById(int id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.get();
+        return userDao.getUserById(id);
     }
 
     @Override
     public void updateUser(User user) {
-        userRepository.save(user);
+        userDao.updateUser(user);
     }
 
     @Override
     public void deleteUserById(int id) {
-        userRepository.deleteById(id);
+        userDao.deleteUserById(id);
     }
 
     @Override
-    public User findByUsername(String name){
-        return userRepository.findByUsername(name);
+    public User findByUsername(String name) {
+        return userDao.findByUsername(name);
     }
 
     @Override
@@ -64,13 +62,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User `%s` not found", name));
         }
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),mapRolesToAuthority(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getFirstName(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthority (Collection<Role> roles) {
-        return roles.stream().map(r ->new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+    private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
+        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
     }
-
 
 
 }

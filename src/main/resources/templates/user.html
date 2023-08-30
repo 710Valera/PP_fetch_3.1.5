@@ -8,8 +8,9 @@
 
 <tr th:object="${user}">
     <p th:text="${user.getId()}">VALUE</p>
-    <p th:text="${user.getName()}">VALUE</p>
-    <p th:text="${user.getSalary()}">VALUE</p>
+    <p th:text="${user.getFirstName()}">VALUE</p>
+    <p th:text="${user.getLastname()}">VALUE</p>
+    <p th:text="${user.getAge()}">VALUE</p>
 </tr>
 
 <a href="/logout">LOGOUT</a>

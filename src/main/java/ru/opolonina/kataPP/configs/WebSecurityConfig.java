@@ -1,5 +1,6 @@
 package ru.opolonina.kataPP.configs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,6 +17,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final UserServiceImp userServiceImp;
 
+    @Autowired
     public WebSecurityConfig(SuccessUserHandler successUserHandler, UserServiceImp userServiceImp) {
         this.successUserHandler = successUserHandler;
         this.userServiceImp = userServiceImp;
@@ -26,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
@@ -37,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -1,5 +1,7 @@
 package ru.opolonina.kataPP.dao;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.opolonina.kataPP.model.User;
@@ -13,7 +15,7 @@ import java.util.List;
 public class UserDaoImp implements UserDao {
 
 
-
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @PersistenceContext
     public EntityManager entityManager;
 
@@ -27,6 +29,9 @@ public class UserDaoImp implements UserDao {
     @Override
     @Transactional
     public void addUser(User user) {
+        if (user.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         entityManager.persist(user);
     }
 
@@ -39,6 +44,9 @@ public class UserDaoImp implements UserDao {
     @Override
     @Transactional
     public void updateUser(User user) {
+        if (user.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         entityManager.merge(user);
     }
 

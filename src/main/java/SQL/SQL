@@ -34,6 +34,6 @@ create table users_roles
 
 insert into `kata_pp`.`users_roles` SET `users_id` = '1', `roles_id` = '1';
 insert into `kata_pp`.`users_roles` SET `users_id` = '1', `roles_id` = '2';
-insert into `kata_pp`.`users_roles` SET `users_id` = '2', `roles_id` = '1';
+insert into `kata_pp`.`users_roles` SET `users_id` = '2', `roles_id` = '2';
 
 

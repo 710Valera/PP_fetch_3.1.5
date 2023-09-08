@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @Component
-public class RoleServiceImp {
+public class RoleServiceImp implements RoleService {
     private RoleDao roleDao;
 
     @Autowired
@@ -18,7 +18,7 @@ public class RoleServiceImp {
         this.roleDao = roleDao;
     }
 
-    public List<Role> getAllRoles() {
+    public List<Role> findAll() {
         return roleDao.findAll();
     }
 }

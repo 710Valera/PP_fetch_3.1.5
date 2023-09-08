@@ -17,12 +17,12 @@ public interface UserDao {
     User getUserById(int id);
 
 
-    void updateUser(User user);
+    void updateUser(User user, int id);
 
     void deleteUserById(int id);
     
 
-    @Query("Select u from User u left join fetch u.roles where u.firstName=:name")
+    @Query("Select u from User u left join fetch u.roles where u.username=:name")
     User findByUsername (String name);
 
 }

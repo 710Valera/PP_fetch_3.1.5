@@ -1,78 +1,88 @@
 package ru.opolonina.kataPP.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.opolonina.kataPP.model.Role;
 import ru.opolonina.kataPP.model.User;
+import ru.opolonina.kataPP.service.RoleService;
 import ru.opolonina.kataPP.service.UserService;
 
-import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
 
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-
+    private final RoleService roleService;
     private final UserService userService;
-    private final String REDIRECT = "redirect:/admin/";
+    private final PasswordEncoder passwordEncoder;
+
+    private final String REDIRECT = "redirect:/admin";
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(RoleService roleService, UserService userService, PasswordEncoder passwordEncoder) {
+        this.roleService = roleService;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "index";
+    @GetMapping()
+    public String showAllUsers(@ModelAttribute ("user") User user, Principal principal, Model model) {
+        User authenticatedUser = userService.findByUsername(principal.getName());
+
+        model.addAttribute ("authenticatedUser", authenticatedUser);
+        model.addAttribute ("roleOfAuthenticatedUser", authenticatedUser.getRoles());
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute( "AllRoles", roleService.findAll());
+        return "admin-page";
     }
 
-    @GetMapping("/{id}")
-    public String getUserById(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "show";
+    @GetMapping("/user-profile/{id}")
+    public String findUser(@PathVariable("id") Integer id, Model model) {
+        User user = userService.findUserById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("AllRoles", user.getRoles());
+        return "user-page";
     }
 
-    @GetMapping("/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "new";
-    }
-
-    @PostMapping
-    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "new";
-        }
-        userService.addUser(user);
+    @GetMapping("/edit/{id}")
+    public String editUser(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("user", userService.findUserById(id));
+        model.addAttribute("AllRoles", roleService.findAll());
         return REDIRECT;
     }
 
-    @GetMapping("/{id}/edit")
-    public String editUser(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "edit";
-    }
 
-    @PutMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "edit";
-        }
-        userService.updateUser(user);
+    @PatchMapping("/update/{id}")
+    public String updateUser(@ModelAttribute("user") User updateUser, @PathVariable("id") int id) {
+        userService.updateUser(updateUser, id); //Находим по id того юзера, которого надо изменить
         return REDIRECT;
-
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteUserForId(@PathVariable("id") int id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteUserById(@PathVariable("id") Integer id) {
         userService.deleteUserById(id);
         return REDIRECT;
     }
 
 
+    @GetMapping("/new")
+    public String form_for_create_user(Model model, User user) {
+        model.addAttribute("user", new User());
+        List<Role> roles = (List<Role>) roleService.findAll();
+        model.addAttribute("AllRoles", roles);
+        return REDIRECT;
+    }
 
+
+    @PostMapping("/create")
+    public String saveNewUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user); // Добавляем этого юзера в БД
+        return REDIRECT;
+    }
 }

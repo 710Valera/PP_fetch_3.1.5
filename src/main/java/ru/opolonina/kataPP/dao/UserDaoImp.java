@@ -15,6 +15,8 @@ import java.util.List;
 public class UserDaoImp implements UserDao {
 
 
+
+
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @PersistenceContext
     public EntityManager entityManager;
@@ -43,11 +45,22 @@ public class UserDaoImp implements UserDao {
 
     @Override
     @Transactional
-    public void updateUser(User user) {
-        if (user.getPassword() != null){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public void updateUser(User updateUser, int id) {
+        User user_from_DB = entityManager.find(User.class, id);
+        user_from_DB.setUsername(updateUser.getUsername());
+        user_from_DB.setLastname(updateUser.getLastname()); //сохраняет
+        user_from_DB.setAge(updateUser.getAge()); //сохраняет
+        user_from_DB.setEmail(updateUser.getEmail()); //сохраняет
+        user_from_DB.setRoles(updateUser.getRoles());
+
+        if (user_from_DB.getPassword().equals(updateUser.getPassword())) {
+            addUser(user_from_DB);
+        } else {
+            user_from_DB.setPassword(passwordEncoder.encode(updateUser.getPassword()));
+            addUser(user_from_DB);
         }
-        entityManager.merge(user);
+
+        addUser(user_from_DB);
     }
 
     @Override
@@ -58,7 +71,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User findByUsername(String name) {
-        String queryString = "Select u from User u left join fetch u.roles where u.firstName=:name";
+        String queryString = "Select u from User u left join fetch u.roles where u.username=:name";
         TypedQuery<User> query = entityManager.createQuery(queryString, User.class);
         query.setParameter("name", name);
         return query.getSingleResult();

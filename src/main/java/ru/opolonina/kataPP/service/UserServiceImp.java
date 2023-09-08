@@ -27,23 +27,23 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> findAll() {
         return userDao.getAllUsers();
     }
 
     @Override
-    public void addUser(User user) {
+    public void saveUser(User user) {
         userDao.addUser(user);
     }
 
     @Override
-    public User getUserById(int id) {
+    public User findUserById(int id) {
         return userDao.getUserById(id);
     }
 
     @Override
-    public void updateUser(User user) {
-        userDao.updateUser(user);
+    public void updateUser(User user, int id) {
+        userDao.updateUser(user, id);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User `%s` not found", name));
         }
-        return new org.springframework.security.core.userdetails.User(user.getFirstName(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {

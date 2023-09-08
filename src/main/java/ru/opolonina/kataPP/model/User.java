@@ -4,7 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +25,7 @@ public class User implements UserDetails {
     @Column(name = "age")
     private Byte age;
 
-    @Email
+
     @Column(name = "email")
     private String email;
     @Column(name = "password")

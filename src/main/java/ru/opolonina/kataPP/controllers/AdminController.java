@@ -50,7 +50,7 @@ public class AdminController {
         return "user-page";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/{id}")
     public String editUser(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("user", userService.findUserById(id));
         model.addAttribute("AllRoles", roleService.findAll());
@@ -58,13 +58,13 @@ public class AdminController {
     }
 
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/{id}")
     public String updateUser(@ModelAttribute("user") User updateUser, @PathVariable("id") int id) {
         userService.updateUser(updateUser, id); //Находим по id того юзера, которого надо изменить
         return REDIRECT;
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteUserById(@PathVariable("id") Integer id) {
         userService.deleteUserById(id);
         return REDIRECT;
@@ -72,7 +72,7 @@ public class AdminController {
 
 
     @GetMapping("/new")
-    public String form_for_create_user(Model model, User user) {
+    public String saveNewUserForm(Model model, User user) {
         model.addAttribute("user", new User());
         List<Role> roles = (List<Role>) roleService.findAll();
         model.addAttribute("AllRoles", roles);
@@ -80,7 +80,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/create")
+    @PostMapping()
     public String saveNewUser(@ModelAttribute("user") User user) {
         userService.saveUser(user); // Добавляем этого юзера в БД
         return REDIRECT;

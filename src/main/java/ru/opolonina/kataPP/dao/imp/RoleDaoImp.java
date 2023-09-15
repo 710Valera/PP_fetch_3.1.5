@@ -1,6 +1,7 @@
-package ru.opolonina.kataPP.dao;
+package ru.opolonina.kataPP.dao.imp;
 
 import org.springframework.stereotype.Repository;
+import ru.opolonina.kataPP.dao.RoleDao;
 import ru.opolonina.kataPP.model.Role;
 
 import javax.persistence.EntityManager;

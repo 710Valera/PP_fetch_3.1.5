@@ -1,4 +1,4 @@
-package ru.opolonina.kataPP.service;
+package ru.opolonina.kataPP.service.imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ru.opolonina.kataPP.dao.UserDao;
 import ru.opolonina.kataPP.model.Role;
 import ru.opolonina.kataPP.model.User;
+import ru.opolonina.kataPP.service.UserService;
 
 import java.util.Collection;
 import java.util.List;

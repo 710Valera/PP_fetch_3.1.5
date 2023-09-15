@@ -1,9 +1,10 @@
-package ru.opolonina.kataPP.dao;
+package ru.opolonina.kataPP.dao.imp;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.opolonina.kataPP.dao.UserDao;
 import ru.opolonina.kataPP.model.User;
 
 import javax.persistence.EntityManager;

@@ -1,4 +1,4 @@
-CREATE TABLE `kata_pp`.`users` (
+CREATE TABLE `users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
@@ -8,19 +8,19 @@ CREATE TABLE `kata_pp`.`users` (
   PRIMARY KEY (`id`));
 
 
-INSERT INTO `kata_pp`.`users` SET `id` = '1', `first_name` = 'admin', `email` = 'admin@test.ru', `last_name` = 'Ivanov', `age` = '22', `password` = '$2a$12$OFS3aw6YmdHcv/dsWeNzfOLajfinw.WZtWIXTS0yVCDMks.MSFzJK';
-INSERT INTO  `kata_pp`.`users` SET `id` = '2', `first_name` = 'user', `email` = 'user@test.ru', `last_name` = 'Petrov', `age` = '16', `password` = '$2a$12$rGP4XZccV9u29Q/6mO8m4Ob/Ebmoh5i6KZkCrVFz1m.PxnHt1wwlG' ;
+INSERT INTO `users` SET `id` = '1', `first_name` = 'admin', `email` = 'admin@test.ru', `last_name` = 'Ivanov', `age` = '22', `password` = '$2a$12$OFS3aw6YmdHcv/dsWeNzfOLajfinw.WZtWIXTS0yVCDMks.MSFzJK';
+INSERT INTO  `users` SET `id` = '2', `first_name` = 'user', `email` = 'user@test.ru', `last_name` = 'Petrov', `age` = '16', `password` = '$2a$12$rGP4XZccV9u29Q/6mO8m4Ob/Ebmoh5i6KZkCrVFz1m.PxnHt1wwlG' ;
 
 
 
-CREATE TABLE `kata_pp`.`roles` (
+CREATE TABLE `roles` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `role` VARCHAR(45) NULL,
   PRIMARY KEY (`id`));
 
 
-insert into `kata_pp`.`roles` SET `id` = '1', `role` = 'ROLE_ADMIN';
-insert into `kata_pp`.`roles` SET `id` = '2', `role` = 'ROLE_USER';
+insert into `roles` SET `id` = '1', `role` = 'ROLE_ADMIN';
+insert into `roles` SET `id` = '2', `role` = 'ROLE_USER';
 
 create table users_roles
 (
@@ -32,7 +32,7 @@ create table users_roles
         foreign key (users_id) references users (id)
 );
 
-insert into `kata_pp`.`users_roles` SET `users_id` = '1', `roles_id` = '1';
-insert into `kata_pp`.`users_roles` SET `users_id` = '1', `roles_id` = '2';
-insert into `kata_pp`.`users_roles` SET `users_id` = '2', `roles_id` = '2';
+insert into `users_roles` SET `users_id` = '1', `roles_id` = '1';
+insert into `users_roles` SET `users_id` = '1', `roles_id` = '2';
+insert into `users_roles` SET `users_id` = '2', `roles_id` = '2';
 

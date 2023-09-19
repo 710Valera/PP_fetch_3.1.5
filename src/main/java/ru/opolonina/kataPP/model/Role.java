@@ -15,9 +15,6 @@ public class Role implements GrantedAuthority {
 
     @Column(name = "role")
     private String role;
-//
-//    @ManyToMany(mappedBy = "roles")
-//    private List<User> users = new ArrayList<>();
 
     public Role() {
     }

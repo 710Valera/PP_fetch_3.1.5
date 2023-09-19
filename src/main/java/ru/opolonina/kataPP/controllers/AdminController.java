@@ -83,6 +83,7 @@ public class AdminController {
     @PostMapping()
     public String saveNewUser(@ModelAttribute("user") User user) {
         userService.saveUser(user); // Добавляем этого юзера в БД
+        System.out.println("Контроллер" + user.toString());
         return REDIRECT;
     }
 }

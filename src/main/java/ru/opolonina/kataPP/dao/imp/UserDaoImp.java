@@ -35,6 +35,7 @@ public class UserDaoImp implements UserDao {
         if (user.getPassword() != null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+        System.out.println("DAO" + user.toString());
         entityManager.persist(user);
     }
 

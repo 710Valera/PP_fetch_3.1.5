@@ -20,6 +20,6 @@ public class RoleServiceImp implements RoleService {
     }
 
     public List<Role> findAll() {
-        return roleDao.findAll();
+        return roleDao.allRoles();
     }
 }

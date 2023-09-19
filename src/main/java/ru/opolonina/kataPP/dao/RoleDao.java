@@ -5,6 +5,6 @@ import ru.opolonina.kataPP.model.Role;
 import java.util.List;
 
 
-public interface RoleDao {
-    public List<Role> findAll();
+public interface RoleDao{
+    public List<Role> allRoles();
 }

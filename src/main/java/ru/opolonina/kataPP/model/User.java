@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -31,12 +32,19 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL  )
+    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
 
     private List<Role> roles = new ArrayList<>();
+
+    public String getRolesAsString() {
+        return roles.stream()
+                .map(Role::getRole)
+                .collect(Collectors.joining(" "));
+    }
+
 
     public User() {
     }
@@ -50,6 +58,8 @@ public class User implements UserDetails {
         this.roles = roles;
 
     }
+
+
 
     public int getId() {
         return id;
@@ -95,6 +105,7 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+
 
 
     @Override

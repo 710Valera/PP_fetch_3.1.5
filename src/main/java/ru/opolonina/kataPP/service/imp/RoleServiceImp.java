@@ -22,4 +22,7 @@ public class RoleServiceImp implements RoleService {
     public List<Role> findAll() {
         return roleDao.allRoles();
     }
+    public Role getRoleById(int id) {
+        return roleDao.getRoleById(id);
+    }
 }

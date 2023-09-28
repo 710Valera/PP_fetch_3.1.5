@@ -35,8 +35,7 @@ public class UserDaoImp implements UserDao {
         if (user.getPassword() != null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        System.out.println("DAO" + user.toString());
-        entityManager.persist(user);
+        entityManager.merge(user);
     }
 
     @Override
@@ -47,22 +46,9 @@ public class UserDaoImp implements UserDao {
 
     @Override
     @Transactional
-    public void updateUser(User updateUser, int id) {
-        User user_from_DB = entityManager.find(User.class, id);
-        user_from_DB.setUsername(updateUser.getUsername());
-        user_from_DB.setLastname(updateUser.getLastname()); //сохраняет
-        user_from_DB.setAge(updateUser.getAge()); //сохраняет
-        user_from_DB.setEmail(updateUser.getEmail()); //сохраняет
-        user_from_DB.setRoles(updateUser.getRoles());
-
-        if (user_from_DB.getPassword().equals(updateUser.getPassword())) {
-            addUser(user_from_DB);
-        } else {
-            user_from_DB.setPassword(passwordEncoder.encode(updateUser.getPassword()));
-            addUser(user_from_DB);
-        }
-
-        addUser(user_from_DB);
+    public void updateUser(User updateUser) {
+        entityManager.merge(updateUser);
+        entityManager.flush();
     }
 
     @Override

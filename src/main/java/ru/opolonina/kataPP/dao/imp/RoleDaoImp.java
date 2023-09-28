@@ -18,6 +18,8 @@ public class RoleDaoImp implements RoleDao {
     public List<Role> allRoles() {
         return entityManager.createQuery("from Role", Role.class).getResultList().subList(0, 2);
     }
+    public Role getRoleById(int id) {
+        return entityManager.find(Role.class, id);
+    }
 
-    ;
 }
